@@ -1,4 +1,4 @@
-import wiringpi2 as w
+import wiringpi as w
 
 btnLeft = 2
 btnRight = 3
