@@ -109,5 +109,12 @@ venv.bak/
 # Image Captioning Data
 /image_captioning/data
 
-# VGG weights
-VQA_Demo/models/CNN/vgg16_weights.h5
+# VQA Data
+/vqa/data/zip
+/vqa/data/annotations
+/vqa/data/vqa_raw_train.json
+/vqa/data/vqa_raw_test.json
+/vqa/data/prepro
+
+# VS Code
+.vscode
