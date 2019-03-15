@@ -3,7 +3,7 @@ import os
 
 btnLeft = 2
 btnRight = 3
-recieved = "Test test test"
+recieved = "test"
 
 def setup():
     w.wiringPiSetupGpio()
