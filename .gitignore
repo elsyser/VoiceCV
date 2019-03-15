@@ -108,3 +108,6 @@ venv.bak/
 
 # Image Captioning Data
 /image_captioning/data
+
+# VGG weights
+VQA_Demo/models/CNN/vgg16_weights.h5
