@@ -1,11 +1,3 @@
-"""
-Download the vqa data and preprocessing.
-
-Version: 1.0
-Contributor: Jiasen Lu
-"""
-
-
 # Download the VQA Questions from http://www.visualqa.org/download.html
 import json
 import os
