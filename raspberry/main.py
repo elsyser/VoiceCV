@@ -1,7 +1,9 @@
 import wiringpi as w
+import os
 
 btnLeft = 2
 btnRight = 3
+recieved = "Test test test"
 
 def setup():
     w.wiringPiSetupGpio()
@@ -14,6 +16,7 @@ def loop():
         print ("left")
     if not w.digitalRead(btnRight):
         print ("right")
+        os.system("espeak \" "+ recieved +" \" ")
 
 
 if __name__ == '__main__':
