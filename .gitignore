@@ -107,8 +107,16 @@ venv.bak/
 .DS_Store
 
 # Image Captioning Data
-/image_captioning/data
+/image_captioning/data/*.zip
+/image_captioning/data/Flickr8k_Dataset
+/image_captioning/data/Flickr8k_text
+/image_captioning/data/glove.6B
+
 /image_captioning/src/weights
+
+/image_captioning/pre_trained/289999.*
+/image_captioning/pre_trained/vocabulary.csv
+/image_captioning/pre_trained/image_captioning
 
 # VQA Data
 /vqa/data/zip
