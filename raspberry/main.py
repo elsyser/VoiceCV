@@ -1,5 +1,4 @@
-# import picamera
-# import picamera.array
+# import packages
 import wiringpi as w
 import os
 import requests
@@ -10,15 +9,23 @@ import json
 import base64
 import speech_recognition as sr
 
+# Inital state of variables and button pin declaration
 response = None
 
 btnLeft = 2
 btnRight = 3
+
 recieved = "test"
 
+# VQA params
 vqaServerIP = "10.106.1.157"
 vqaServerPort = "5000"
 vqaServerPath = "sendImage"
+
+# Image capturing params
+capServerIP = "10.106.1.157"
+capServerPort = "5000"
+capServerPath = "sendImage"
 
 # Setup function for initialization
 def setup():
@@ -37,10 +44,12 @@ def loop():
         # print(getCameraImage())
         visualQuestionAnswering(getCameraImage(),transcribe())
         
-
+# Text-to-speach
 def say(text):
     os.system("espeak \" "+ text +" \" ")
 
+
+# Take a still frame and return it
 def getCameraImage():
     video = v4l2capture.Video_device("/dev/video0")
     size_x, size_y = video.set_format(320, 240)
@@ -55,26 +64,29 @@ def getCameraImage():
 
     return image_data
     
-
+# Send data in JSON format
 def sendData(ip,port,path,payload):
     try:
         response = requests.post(
             "http://" + ip + ":" + port + "/" + path, data=json.dumps(payload)
         )
-    except requests.exceptions.RequestException as e:  # This is the correct syntax
+    except requests.exceptions.RequestException as e:
         print(e)
 
 
+# Send data to server for image capturing and 'speak' response
 def imageCaptioning(img):
-    sendData(vqaServerIP,vqaServerPort,vqaServerPath,
+    sendData(capServerIP,capServerPort,capServerPath,
         dict(
             tag = "captioning",
             imgData = base64.b64encode(img),
             question = ""
         )
     )
-    # print(response.json())
+    # say(response.text)
 
+
+# Send data to server for vqa and 'speak response
 def visualQuestionAnswering(img, q):
     sendData(vqaServerIP,vqaServerPort,vqaServerPath,
         dict(
@@ -83,15 +95,16 @@ def visualQuestionAnswering(img, q):
             question = q
         )
     )
-    # print(response.json())
+    # say(response.text)
 
+
+# Transcribe audio
 def transcribe():
     recognizer = sr.Recognizer()
     
     print('-'*100)
     print("Listening...\n")
-    # with sr.Microphone() as src:
-    #     audio = recognizer.listen(src)
+    # Use arecord to record short
     os.system("arecord -D plughw:1,0 -d 5 temp.wav")
     with sr.WavFile("temp.wav") as source:
         audio = recognizer.record(source)  
