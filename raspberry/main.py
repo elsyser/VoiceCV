@@ -6,6 +6,8 @@ import requests
 from PIL import Image
 import select
 import v4l2capture
+import json
+import base64
 
 
 btnLeft = 2
@@ -27,7 +29,6 @@ def loop():
         print ("right")
         say(recieved)
         # print(getCameraImage())
-        
         visualQuestionAnswering(getCameraImage(),"Testing?")
         
 
@@ -43,13 +44,14 @@ def getCameraImage():
     select.select((video,), (), ())
     image_data = video.read()
     video.close()
+    image = Image.frombytes("RGB", (size_x, size_y), image_data)
+    image.save("image.jpg")
     return image_data
-    # image = Image.frombytes("RGB", (size_x, size_y), image_data)
-    # image.save("image.jpg")
+    
 
-def sendData(ip,port,path,data):
-    r = requests.get(
-        "http://" + ip + ":" + port + "/" + path, data
+def sendData(ip,port,path,payload):
+    r = requests.post(
+        "http://" + ip + ":" + port + "/" + path, data=json.dumps(payload)
     )
 
 
@@ -64,10 +66,10 @@ def sendData(ip,port,path,data):
 #     print(r.json())
 
 def visualQuestionAnswering(img, q):
-    sendData("localhost","5000","",
+    sendData("10.106.1.157","5000","sendImage",
         dict(
             tag = "vqa",
-            imgData = img,
+            imgData = base64.b64encode(img),
             question = q
         )
     )
