@@ -26,28 +26,31 @@ def loop():
     if not w.digitalRead(btnRight):
         print ("right")
         say(recieved)
-        print(getCameraImage())
+        # print(getCameraImage())
         
-        # visualQuestionAnswering(getCameraImage())
+        visualQuestionAnswering(getCameraImage(),"Testing?")
         
 
 def say(text):
     os.system("espeak \" "+ text +" \" ")
 
 def getCameraImage():
-
     video = v4l2capture.Video_device("/dev/video0")
-    size_x, size_y = video.set_format(480, 240)
+    size_x, size_y = video.set_format(320, 240)
     video.create_buffers(1)
     video.queue_all_buffers()
     video.start()
     select.select((video,), (), ())
     image_data = video.read()
     video.close()
-    image = Image.frombytes("RGB", (size_x, size_y), image_data)
-    image.save("image.jpg")
-    print "Saved image.jpg (Size: " + str(size_x) + " x " + str(size_y) + ")"
+    return image_data
+    # image = Image.frombytes("RGB", (size_x, size_y), image_data)
+    # image.save("image.jpg")
 
+def sendData(ip,port,path,data):
+    r = requests.get(
+        "http://" + ip + ":" + port + "/" + path, data
+    )
 
 
 # def imageCaptioning():
@@ -60,14 +63,14 @@ def getCameraImage():
 #     )
 #     print(r.json())
 
-# def visualQuestionAnswering(data):
-#     r = requests.get(
-#         "http://10.106.1.157:5000/sendImage",
-#         dict(
-#             image = str(data)
-#         )
-#     )
-# print(r.json())
+def visualQuestionAnswering(img, q):
+    sendData("localhost","5000","",
+        dict(
+            tag = "vqa",
+            imgData = img,
+            question = q
+        )
+    )
 
 if __name__ == '__main__':
     setup()
