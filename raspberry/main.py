@@ -10,10 +10,15 @@ import json
 import base64
 import speech_recognition as sr
 
+response = None
 
 btnLeft = 2
 btnRight = 3
 recieved = "test"
+
+vqaServerIP = "10.106.1.157"
+vqaServerPort = "5000"
+vqaServerPath = "sendImage"
 
 # Setup function for initialization
 def setup():
@@ -44,39 +49,41 @@ def getCameraImage():
     video.start()
     select.select((video,), (), ())
     image_data = video.read()
+    # image = Image.frombytes("RGB", (size_x, size_y), image_data)
+    # image.save("image.jpg")
     video.close()
-    image = Image.frombytes("RGB", (size_x, size_y), image_data)
-    image.save("image.jpg")
+
     return image_data
     
 
 def sendData(ip,port,path,payload):
     try:
-        r = requests.post(
+        response = requests.post(
             "http://" + ip + ":" + port + "/" + path, data=json.dumps(payload)
         )
     except requests.exceptions.RequestException as e:  # This is the correct syntax
         print(e)
 
 
-# def imageCaptioning():
-#     r = requests.post(
-#         "https://api.deepai.org/api/densecap",
-#         files={
-#             'image': open('./image.jpg', 'rb'),
-#         },
-#         headers={'api-key': 'YOUR_API_KEY'}
-#     )
-#     print(r.json())
+def imageCaptioning(img):
+    sendData(vqaServerIP,vqaServerPort,vqaServerPath,
+        dict(
+            tag = "captioning",
+            imgData = base64.b64encode(img),
+            question = ""
+        )
+    )
+    # print(response.json())
 
 def visualQuestionAnswering(img, q):
-    sendData("10.106.1.157","5000","sendImage",
+    sendData(vqaServerIP,vqaServerPort,vqaServerPath,
         dict(
             tag = "vqa",
             imgData = base64.b64encode(img),
             question = q
         )
     )
+    # print(response.json())
 
 def transcribe():
     recognizer = sr.Recognizer()
