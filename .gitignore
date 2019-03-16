@@ -108,6 +108,7 @@ venv.bak/
 
 # Image Captioning Data
 /image_captioning/data
+/image_captioning/src/weights
 
 # VQA Data
 /vqa/data/zip
