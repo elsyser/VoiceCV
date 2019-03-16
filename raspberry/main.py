@@ -51,9 +51,12 @@ def getCameraImage():
     
 
 def sendData(ip,port,path,payload):
-    r = requests.post(
-        "http://" + ip + ":" + port + "/" + path, data=json.dumps(payload)
-    )
+    try:
+        r = requests.post(
+            "http://" + ip + ":" + port + "/" + path, data=json.dumps(payload)
+        )
+    except requests.exceptions.RequestException as e:  # This is the correct syntax
+        print(e)
 
 
 # def imageCaptioning():
