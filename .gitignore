@@ -125,3 +125,4 @@ venv.bak/
 
 # VS Code
 .vscode
+server/vqa_pretrained/models/CNN/vgg16_weights.h5
