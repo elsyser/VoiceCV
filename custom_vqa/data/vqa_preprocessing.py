@@ -106,8 +106,8 @@ def main(params):
 
     print ('Training sample %d, Testing sample %d...' %(len(train), len(test)))
 
-    json.dump(train, open('vqa_raw_train.json', 'w'))
-    json.dump(test, open('vqa_raw_test.json', 'w'))
+    json.dump(train, open('raw/vqa_raw_train.json', 'w'))
+    json.dump(test, open('raw/vqa_raw_test.json', 'w'))
 
 if __name__ == "__main__":
 
