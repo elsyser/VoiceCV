@@ -10,8 +10,6 @@ import base64
 import speech_recognition as sr
 
 # Inital state of variables and button pin declaration
-response = None
-
 btnLeft = 2
 btnRight = 3
 
@@ -69,6 +67,10 @@ def sendData(ip,port,path,payload):
         response = requests.post(
             "http://" + ip + ":" + port + "/" + path, data=json.dumps(payload)
         )
+        print(response)
+        # print(response.json())
+        print(response.text)
+        say(response.text)
     except requests.exceptions.RequestException as e:
         print(e)
 
@@ -82,7 +84,6 @@ def imageCaptioning(img):
             question = ""
         )
     )
-    # say(response.text)
 
 
 # Send data to server for vqa and 'speak response
@@ -94,7 +95,6 @@ def visualQuestionAnswering(img, q):
             question = q
         )
     )
-    # say(response.text)
 
 
 # Transcribe audio
@@ -107,8 +107,7 @@ def transcribe():
     os.system("arecord -D plughw:1,0 -d 5 temp.wav")
     with sr.WavFile("temp.wav") as source:
         audio = recognizer.record(source)  
-        print("Working")
-        
+        print("Working")    
     try:
         res = recognizer.recognize_google(audio).lower()
         print("You said: \"" + res + "\"")
@@ -118,12 +117,12 @@ def transcribe():
     except sr.UnknownValueError:
         print("Could not understand audio")
         print('-'*100)
-        return None
+        return ""
         
     except sr.RequestError as e:
         print("Could not request results from the service; {0}".format(e))
         print('-'*100)
-        return None
+        return ""
 
 if __name__ == '__main__':
     setup()
