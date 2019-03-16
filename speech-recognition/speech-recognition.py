@@ -1,4 +1,5 @@
 import speech_recognition as sr
+import os
 
 __all__ = [
     "transcribe",
@@ -16,6 +17,7 @@ def transcribe():
     try:
         res = recognizer.recognize_google(audio).lower()
         print("You said: \"" + res + "\"")
+        os.system("say \"" +res + "\"" )
         print('-'*100)
         return res
     
