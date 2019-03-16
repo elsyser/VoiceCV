@@ -21,6 +21,12 @@ CNN_weights_file_name   = 'vqa_pretrained/models/CNN/vgg16_weights.h5'
 # Chagne the value of verbose to 0 to avoid printing the progress statements
 verbose = 1
 
+IMAGE_FEATURES = None
+QUESTION_FEATURES = None
+VQA_MODEL = None
+is_loaded = False
+
+
 def get_image_model(CNN_weights_file_name):
     ''' Takes the CNN weights file, and returns the VGG model update 
     with the weights. Requires the file VGG.py inside models/CNN '''
@@ -122,9 +128,6 @@ def main(image_file_name , question):
     labelencoder = joblib.load(label_encoder_file_name)
     for label in reversed(y_sort_index[0,-5:]):
         print str(round(y_output[0,label]*100,2)).zfill(5), "% ", labelencoder.inverse_transform(label)
-
-def load_models():
-
 
 if __name__ == "__main__":
     main()
