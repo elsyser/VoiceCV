@@ -18,7 +18,6 @@ h5py = "*"
 speechrecognition = "*"
 spacy = "*"
 nltk = "*"
-tensorflow-gpu = "*"
 
 [requires]
 python_version = "3.7"
