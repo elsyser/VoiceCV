@@ -37,11 +37,10 @@ def setup():
 # Loop function (the main loop of the program)
 def loop():
     if not w.digitalRead(btnLeft):
-        print ("left")
+        # print ("left")
+        imageCaptioning(getCameraImage())
     if not w.digitalRead(btnRight):
-        print ("right")
-        say(recieved)
-        # print(getCameraImage())
+        # print ("right")
         visualQuestionAnswering(getCameraImage(),transcribe())
         
 # Text-to-speach
