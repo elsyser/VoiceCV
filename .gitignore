@@ -116,11 +116,11 @@ venv.bak/
 /image_captioning/src/weights
 
 # VQA Data
-/vqa/data/zip/*.zip
 /vqa/data/annotations/*.json
-/vqa/data/vqa_raw_train.json
-/vqa/data/vqa_raw_test.json
 /vqa/data/prepro/data_prepro.*
+/vqa/data/prepro/data_img.*
+/vqa/data/raw/*.json
+/vqa/data/zip/*.zip
 
 # VS Code
 .vscode
