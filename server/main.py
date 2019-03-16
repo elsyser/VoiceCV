@@ -13,14 +13,8 @@ def sendImage():
     image = Image.frombytes("RGB", (320, 240), img)
     image.save("image.jpg")
     print req["question"]
-    vqa.main("image.jpg" , req["question"])
-
-
-
-    
-    # print (img)
+    vqa.main("image.jpg" , str(req["question"]))
     return "BACE"
-    # vqa.main("./vqa_pretrained/test.jpg" , "Is there a train")
     
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)

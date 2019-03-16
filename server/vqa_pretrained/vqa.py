@@ -11,9 +11,9 @@ K.set_image_dim_ordering('th')
    
 # File paths for the model, all of these except the CNN Weights are 
 # provided in the repo, See the models/CNN/README.md to download VGG weights
-VQA_weights_file_name   = 'vqa_pretrained/models/VQA/VQA_MODEL_WEIGHTS.hdf5'
-label_encoder_file_name = 'vqa_pretrained/models/VQA/FULL_labelencoder_trainval.pkl'
-CNN_weights_file_name   = 'vqa_pretrained/models/CNN/vgg16_weights.h5'
+VQA_weights_file_name   = 'models/VQA/VQA_MODEL_WEIGHTS.hdf5'
+label_encoder_file_name = 'models/VQA/FULL_labelencoder_trainval.pkl'
+CNN_weights_file_name   = 'models/CNN/vgg16_weights.h5'
 # CNN_weights_file_name   = 'models/CNN/vgg16_weights.h5'
 # VQA_weights_file_name   = 'models/VQA/VQA_MODEL_WEIGHTS.hdf5'
 # label_encoder_file_name = 'models/VQA/FULL_labelencoder_trainval.pkl'
@@ -28,6 +28,7 @@ is_loaded = False
 
 
 def get_image_model(CNN_weights_file_name):
+    print "CNN weight file name" + CNN_weights_file_name
     ''' Takes the CNN weights file, and returns the VGG model update 
     with the weights. Requires the file VGG.py inside models/CNN '''
     from models.CNN.VGG import VGG_16
@@ -96,22 +97,49 @@ def get_question_features(question):
     return question_tensor
 
 
-def main(image_file_name , question):
+# def main(image_file_name , question):
+#     ''' accepts command line arguments for image file and the question and 
+#     builds the image model (VGG) and the VQA model (LSTM and MLP) 
+#     prints the top 5 response along with the probability of each '''    
+#     if verbose : print("\n\n\nLoading image features ...")
+#     image_features = get_image_features(image_file_name, CNN_weights_file_name)
+
+#     if verbose : print("Loading question features ...")
+#     question_features = get_question_features(unicode(question, 'utf-8'))
+
+#     if verbose : print("Loading VQA Model ...")
+#     vqa_model = get_VQA_model(VQA_weights_file_name)
+    
+
+#     if verbose : print("\n\n\nPredicting result ...") 
+#     y_output = vqa_model.predict([question_features, image_features])
+#     y_sort_index = np.argsort(y_output)
+
+#     # This task here is represented as a classification into a 1000 top answers
+#     # this means some of the answers were not part of trainng and thus would 
+#     # not show up in the result.
+#     # These 1000 answers are stored in the sklearn Encoder class
+#     labelencoder = joblib.load(label_encoder_file_name)
+#     for label in reversed(y_sort_index[0,-5:]):
+#         print str(round(y_output[0,label]*100,2)).zfill(5), "% ", labelencoder.inverse_transform(label)
+
+
+def main():
     ''' accepts command line arguments for image file and the question and 
     builds the image model (VGG) and the VQA model (LSTM and MLP) 
     prints the top 5 response along with the probability of each '''
 
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument('-image_file_name', type=str, default='test.jpg')
-    # parser.add_argument('-question', type=str, default='What vechile is in the picture?')
-    # args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-image_file_name', type=str, default='test.jpg')
+    parser.add_argument('-question', type=str, default='What vechile is in the picture?')
+    args = parser.parse_args()
 
     
     if verbose : print("\n\n\nLoading image features ...")
-    image_features = get_image_features(image_file_name, CNN_weights_file_name)
+    image_features = get_image_features(args.image_file_name, CNN_weights_file_name)
 
     if verbose : print("Loading question features ...")
-    question_features = get_question_features(unicode(question, 'utf-8'))
+    question_features = get_question_features(unicode(args.question, 'utf-8'))
 
     if verbose : print("Loading VQA Model ...")
     vqa_model = get_VQA_model(VQA_weights_file_name)
@@ -126,8 +154,12 @@ def main(image_file_name , question):
     # not show up in the result.
     # These 1000 answers are stored in the sklearn Encoder class
     labelencoder = joblib.load(label_encoder_file_name)
-    for label in reversed(y_sort_index[0,-5:]):
-        print str(round(y_output[0,label]*100,2)).zfill(5), "% ", labelencoder.inverse_transform(label)
+    # for label in reversed(y_sort_index[0,-5:]):
+    #     print str(round(y_output[0,label]*100,2)).zfill(5), "% ", labelencoder.inverse_transform(label)
+    with open("output.txt" , "w") as f:
+        f.write(str(labelencoder.inverse_transform(y_sort_index[0,-1])))
+
+    
 
 if __name__ == "__main__":
     main()
