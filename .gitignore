@@ -107,14 +107,20 @@ venv.bak/
 .DS_Store
 
 # Image Captioning Data
-/image_captioning/data
+/image_captioning/data/*.zip
+/image_captioning/data/Flickr8k_Dataset
+/image_captioning/data/Flickr8k_text
+/image_captioning/data/glove.6B
+
+/image_captioning/pretrained
+/image_captioning/src/weights
 
 # VQA Data
-/vqa/data/zip
-/vqa/data/annotations
+/vqa/data/zip/*.zip
+/vqa/data/annotations/*.json
 /vqa/data/vqa_raw_train.json
 /vqa/data/vqa_raw_test.json
-/vqa/data/prepro
+/vqa/data/prepro/data_prepro.*
 
 # VS Code
 .vscode
