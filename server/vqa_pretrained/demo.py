@@ -5,6 +5,11 @@ from keras.optimizers import SGD
 from sklearn.externals import joblib
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from keras import backend as K
+
+# import en_core_web_sm
+
+
+
 K.set_image_data_format('channels_first')
 K.set_image_dim_ordering('th')
 
@@ -14,6 +19,8 @@ K.set_image_dim_ordering('th')
 VQA_weights_file_name   = 'models/VQA/VQA_MODEL_WEIGHTS.hdf5'
 label_encoder_file_name = 'models/VQA/FULL_labelencoder_trainval.pkl'
 CNN_weights_file_name   = 'models/CNN/vgg16_weights.h5'
+# CNN_weights_file_name   = 'models/CNN/vgg16_weights.h5'
+
 
 # Chagne the value of verbose to 0 to avoid printing the progress statements
 verbose = 1
@@ -67,7 +74,7 @@ def get_VQA_model(VQA_weights_file_name):
     vqa_model = VQA.VQA_MODEL()
 
 
-    vqa_model.load_weights(VQA_weights_file_name)
+    vqa_model.load_weights(os.path.join(VQA_weights_file_name))
 
     vqa_model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
     return vqa_model
@@ -159,4 +166,4 @@ def main(image_file_name , question):
 
 
 if __name__ == "__main__":
-    main()
+    main("test.jpg" , "Is there a train")
