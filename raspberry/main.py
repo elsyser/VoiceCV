@@ -8,6 +8,7 @@ import select
 import v4l2capture
 import json
 import base64
+import speech_recognition as sr
 
 
 btnLeft = 2
@@ -29,7 +30,7 @@ def loop():
         print ("right")
         say(recieved)
         # print(getCameraImage())
-        visualQuestionAnswering(getCameraImage(),"Testing?")
+        visualQuestionAnswering(getCameraImage(),transcribe())
         
 
 def say(text):
@@ -73,6 +74,34 @@ def visualQuestionAnswering(img, q):
             question = q
         )
     )
+
+def transcribe():
+    recognizer = sr.Recognizer()
+    
+    print('-'*100)
+    print("Listening...\n")
+    # with sr.Microphone() as src:
+    #     audio = recognizer.listen(src)
+    os.system("arecord -D plughw:1,0 -d 5 temp.wav")
+    with sr.WavFile("temp.wav") as source:
+        audio = recognizer.record(source)  
+        print("Working")
+        
+    try:
+        res = recognizer.recognize_google(audio).lower()
+        print("You said: \"" + res + "\"")
+        print('-'*100)
+        return res
+    
+    except sr.UnknownValueError:
+        print("Could not understand audio")
+        print('-'*100)
+        return None
+        
+    except sr.RequestError as e:
+        print("Could not request results from the service; {0}".format(e))
+        print('-'*100)
+        return None
 
 if __name__ == '__main__':
     setup()
