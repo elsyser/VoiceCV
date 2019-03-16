@@ -114,6 +114,7 @@ venv.bak/
 
 /image_captioning/pretrained
 /image_captioning/src/weights
+/image_captioning/src/legacy/weights
 
 # VQA Data
 /vqa/data/annotations/*.json
