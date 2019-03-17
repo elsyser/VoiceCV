@@ -10,7 +10,10 @@ from PIL import Image
 __all__ = [
     'IMAGE_ENCODER',
     'CAPTION_GENERATOR',
-    
+
+    'word2idx',
+    'idx2word'
+
     'preprocess',
     'encode',
     'greedy_search_inference',
@@ -44,9 +47,9 @@ def preprocess(path_to_img):
 
 def encode(path_to_img):
     image = preprocess(path_to_img) # preprocess the image
-    fea_vec = IMAGE_ENCODER.predict(image) # Get the encoding vector for the image
-    fea_vec = np.reshape(fea_vec, fea_vec.shape[1]) # reshape from (1, 2048) to (2048, )
-    return fea_vec
+    encoded_vec = IMAGE_ENCODER.predict(image) # Get the encoding vector for the image
+    encoded_vec = np.reshape(encoded_vec, encoded_vec.shape[1]) # reshape from (1, 2048) to (2048, )
+    return encoded_vec
 
 def greedy_search_inference(path_to_img, max_length=34):
     encoded = encode(path_to_img).reshape((1, 2048))
@@ -56,6 +59,7 @@ def greedy_search_inference(path_to_img, max_length=34):
     for i in range(max_length):
         sequence = [word2idx[w] for w in in_seq.split() if w in word2idx]
         sequence = pad_sequences([sequence], maxlen=max_length)
+        print(sequence)
 
         yhat = CAPTION_GENERATOR.predict([encoded, sequence], verbose=0)
         yhat = np.argmax(yhat)
