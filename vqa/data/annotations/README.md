@@ -1,1 +1,0 @@
-VQA Dataset Website data (annotations)
