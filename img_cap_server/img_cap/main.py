@@ -59,7 +59,6 @@ def greedy_search_inference(path_to_img, max_length=34):
     for i in range(max_length):
         sequence = [word2idx[w] for w in in_seq.split() if w in word2idx]
         sequence = pad_sequences([sequence], maxlen=max_length)
-        print(sequence)
 
         yhat = CAPTION_GENERATOR.predict([encoded, sequence], verbose=0)
         yhat = np.argmax(yhat)
