@@ -1,1 +1,0 @@
-VisualQA Data (JSONs)
