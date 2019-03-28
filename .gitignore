@@ -127,3 +127,9 @@ venv.bak/
 .vscode
 /vqa_server/vqa_pretrained/models/CNN/vgg16_weights.h5
 /vqa_server/vqa_pretrained/output.txt
+
+# Buffer files
+/vqa_server/image.jpg
+/vqa_server/vqa_pretrained/output.txt
+/image_cap_server/output.txt
+/image_cap_server/image.jpg

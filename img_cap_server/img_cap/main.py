@@ -6,6 +6,7 @@ from keras.models import Model, load_model, model_from_json
 from keras.preprocessing import image
 from keras.preprocessing.sequence import pad_sequences
 from PIL import Image
+import sys
 
 __all__ = [
     'IMAGE_ENCODER',
@@ -22,15 +23,15 @@ __all__ = [
 
 IMAGE_ENCODER = InceptionV3(weights='imagenet')
 IMAGE_ENCODER = Model(IMAGE_ENCODER.inputs, IMAGE_ENCODER.layers[-2].output)
-word2idx = json.load(open('./word2idx.json'))
+word2idx = json.load(open('./img_cap/word2idx.json'))
 idx2word = {val: key for key, val in word2idx.items()}
 
-with open('./model.json', 'r') as json_file:
+with open('./img_cap/model.json', 'r') as json_file:
     architecture = json.load(json_file)
     architecture = json.dumps(architecture)
 
 CAPTION_GENERATOR = model_from_json(architecture)
-CAPTION_GENERATOR.load_weights('./model_30.h5')
+CAPTION_GENERATOR.load_weights('./img_cap/model_30.h5')
 
 
 
@@ -51,7 +52,9 @@ def encode(path_to_img):
     encoded_vec = np.reshape(encoded_vec, encoded_vec.shape[1]) # reshape from (1, 2048) to (2048, )
     return encoded_vec
 
+
 def greedy_search_inference(path_to_img, max_length=34):
+
     encoded = encode(path_to_img).reshape((1, 2048))
 
     in_seq = 'startseq'
@@ -72,8 +75,11 @@ def greedy_search_inference(path_to_img, max_length=34):
     final = in_seq.split()
     final = final[1:-1]
     final = ' '.join(final)
+
     return final
 
 
 if __name__ == '__main__':
-    print(greedy_search_inference('./test.jpg'))
+    path_to_img = sys.argv[1]
+    with open('output.txt' , 'w') as f:
+        f.write(greedy_search_inference(path_to_img))

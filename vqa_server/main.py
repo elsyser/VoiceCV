@@ -23,7 +23,7 @@ def sendImage():
     #Save the image to file system
     image.save("image.jpg")
     question = req["question"]
-    print "Question is " + question
+    print "Question is :" + question
     os.system("cd vqa_pretrained; python vqa.py -image_file_name ../image.jpg -question \"" + question +"\"")
     res = ''
     # Read the outputed file of vqa.py and send it as response
