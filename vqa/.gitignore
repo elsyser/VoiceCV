@@ -106,30 +106,19 @@ venv.bak/
 # Mac OSX
 .DS_Store
 
-# Image Captioning Data
-/image_captioning/data/*.zip
-/image_captioning/data/Flickr8k_Dataset
-/image_captioning/data/Flickr8k_text
-/image_captioning/data/glove.6B
-
-/image_captioning/pretrained
-/image_captioning/src/weights
-/image_captioning/src/legacy/weights
-
-# VQA Data
-/vqa/data/annotations/*.json
-/vqa/data/prepro/data_prepro.*
-/vqa/data/prepro/data_img.*
-/vqa/data/raw/*.json
-/vqa/data/zip/*.zip
-
 # VS Code
 .vscode
-/vqa_server/vqa_pretrained/models/CNN/vgg16_weights.h5
-/vqa_server/vqa_pretrained/output.txt
 
-# Buffer files
-/vqa_server/image.jpg
-/vqa_server/vqa_pretrained/output.txt
-/image_cap_server/output.txt
-/image_cap_server/image.jpg
+# Big Data
+/data/annotations/*.json
+/data/prepro/data_prepro.*
+/data/prepro/data_img.*
+/data/raw/*.json
+/data/zip/*.zip
+
+# Weights
+/vqa_pretrained/models/CNN/vgg16_weights.h5
+
+# Buffer Files
+/vqa_pretrained/output.txt
+/image.jpg
